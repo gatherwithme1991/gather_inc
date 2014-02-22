@@ -1,7 +1,5 @@
 Gather::Application.routes.draw do
   
-  
-  match 'users', to: 'users#show', via: :get
   match 'create', to: 'users#create', via: :post
 
   # The priority is based upon order of creation: first created -> highest priority.

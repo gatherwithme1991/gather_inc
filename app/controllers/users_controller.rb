@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   PASSWORD_MIN_LENGTH = 6		
+  
   def create
   	@user = User.new(user_params)
     if @user.save
@@ -22,9 +23,15 @@ class UsersController < ApplicationController
     end
   end
 
-  def show
-  	puts "User show request"
+  def login
+  	# Get email and password and fetch necessary information
   end
+
+ 
+  def logout
+  	# Get email and destroy the remember token of the user
+  end
+
 
   private
 
