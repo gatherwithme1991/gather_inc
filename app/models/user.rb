@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
   attr_accessor :remember_token_pure
-  
+
+  has_many :friendships, foreign_key: "user_id", dependent: :destroy
+  has_many :friendships, foreign_key: "friend_id", dependent: :destroy
+
   before_save { self.email = email.downcase }
   before_create :create_remember_token
   validates :name, presence: true, length: { maximum: 50 }
