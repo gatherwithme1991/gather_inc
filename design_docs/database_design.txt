@@ -1,0 +1,46 @@
+User
+user_id long
+user_name string
+password string
+first_name string
+last_name string
+upcoming_events long(event_id)
+past_events long(event_id)
+
+Events
+event_id long
+event_name string
+event_datetime datetime
+event_type string
+pictures string(absolute path to pictures)
+venue long(venue id)
+whos_invited long (user_id)
+whos_going long(user_id)
+proposed_venues long(venue_id)
+proposed_even_datetimes datetime
+proposed_movies long(movie_id)
+who_brings_what long(item id)
+
+Venues
+venue_id long
+venue_name string
+venue_coordinates string
+who_voted long (user_id)
+
+EventDatetimes
+event_datetime_id long
+event_datetime datetime
+who_voted long(user_id)
+
+WhoBringsWhat
+item_id long
+user_id long
+item string
+
+WhichMovie
+movie_id
+movie_name string
+who_voted long(user_id)
+
+
+

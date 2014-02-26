@@ -1,0 +1,2 @@
+#Creaate User
+user[name]=Sercan&user[last_name]=Mihmanli&user[email]=smihmanli@yahoo.com&user[password]=3004se&user[password_confirmation]=3004sea

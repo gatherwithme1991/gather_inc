@@ -11,7 +11,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140222195707) do
+ActiveRecord::Schema.define(version: 20140226002736) do
+
+  create_table "brought_items", force: true do |t|
+    t.integer  "bringer"
+    t.string   "item"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "event_id"
+  end
+
+  create_table "event_datetimes", force: true do |t|
+    t.datetime "event_datetime"
+    t.string   "who_voted"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "event_id"
+    t.boolean  "is_final"
+  end
+
+  create_table "events", force: true do |t|
+    t.string   "event_name"
+    t.string   "event_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "is_active"
+    t.string   "pictures"
+  end
 
   create_table "friendships", force: true do |t|
     t.integer  "user_id"
@@ -24,15 +50,46 @@ ActiveRecord::Schema.define(version: 20140222195707) do
   add_index "friendships", ["user_id", "friend_id"], name: "index_friendships_on_user_id_and_friend_id", unique: true
   add_index "friendships", ["user_id"], name: "index_friendships_on_user_id"
 
+  create_table "invitees", force: true do |t|
+    t.integer  "event_id"
+    t.integer  "invitee_id"
+    t.string   "invitee_name"
+    t.boolean  "going"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "movies", force: true do |t|
+    t.string   "movie_name"
+    t.string   "who_voted"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "event_id"
+    t.boolean  "is_final"
+  end
+
   create_table "users", force: true do |t|
     t.string   "new"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "email"
     t.string   "name"
     t.string   "last_name"
     t.string   "password_digest"
     t.string   "remember_token"
+    t.string   "going"
+    t.string   "invited"
+    t.boolean  "is_active"
+    t.string   "phone_number"
+  end
+
+  create_table "venues", force: true do |t|
+    t.string   "venue_name"
+    t.string   "venue_coordinates"
+    t.string   "who_voted"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "event_id"
+    t.boolean  "is_final"
   end
 
 end
