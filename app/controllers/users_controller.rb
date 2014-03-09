@@ -1,38 +1,67 @@
 class UsersController < ApplicationController
   include UsersHelper
-  PASSWORD_MIN_LENGTH = 6
-  PHONE_NUMBER_LENGTH = 7		
   
+  def load_main_page
+    
+  end
+
   def create
   	@user = User.new(user_params)
-    if @user.save
-    	@return_code = 0
-    else
-    	# Return code depending on the error
-    	if !(user_params[:password].eql? user_params[:password_confirmation])
-    		@return_code = -1
-    	elsif (user_params[:phone_number].length != PHONE_NUMBER_LENGTH
-    		@return_code = -2
-    	elsif user_params[:password].length < PASSWORD_MIN_LENGTH
-    		@return_code = -3
-        elsif user_params[:name].length == 0 || user_params[:last_name].length == 0
-        	@return_code = -4
-        elsif User.find_by(phone_number: user_params[:phone_number])
-        	@return_code = -5
-        	
-  		end  		
+    user_email = @user[:email]
+  
+    @user[:password_digest] = digest(@user[:password_digest])
+    if User.find_by(email: user_email.downcase) == nil
+      @user[:is_active] = true
+      if @user.save
+        #Make sure you add a profile pic path (might wanna use mkdir)
+        @return_code = 0
+        @user_id = @user[:id]
+      else
+        @return_code = -1
+      end
+    else 
+      @return_code = -2
     end
   end
 
-  def login
+  def login_with_facebook
   	# Get email and password and fetch necessary information
-    user = User.find_by(phone_number: user_params[:phone_number])
-    current_user = user.authenticate(user_params[:password])
-    if current_user
-      retrieve_initial_user_info(current_user)
-      @return_code = 0
+    user = User.find_by(facebook_id: user_params[:facebook_id])
+    
+    if user == nil #This user never logged in with fb before
+      #Call fb api to generate a token
+      @user = User.new(user_params)
+      @user[:is_active] = true
+      @user[:facebook_token_digest] = digest(@user[:facebook_token_digest])
+      if @user.save
+        @return_code = 0
+        @user_id = user[:id]
+        retrieve_initial_user_info(user)
+      else
+        @return_code = -3
+      end
     else
-      @return_code = -6
+      #This user already logged in with fb
+      if authenticate(user_params[:facebook_token_digest], user[:facebook_token_digest])
+        retrieve_initial_user_info(user)
+        @return_code = 1
+      else
+        @return_code = -4
+      end
+
+    end
+     
+    
+  end
+
+  def login_with_email
+    user = User.find_by(email: user_params[:email])
+    if user != nil && authenticate(user_params[:password_digest], user[:password_digest]) 
+      @return_code = 0
+      @user_id = user[:id]
+      retrieve_initial_user_info(user)
+    else
+      @return_code = -1
     end
   end
 
@@ -45,7 +74,7 @@ class UsersController < ApplicationController
   private
 
   	def user_params
-      	params.require(:user).permit(:name, :last_name, :email, :password,
-                                   :password_confirmation)
+      	params.require(:user).permit(:name, :last_name, :email, :password_digest,
+                                     :facebook_id, :facebook_token_digest)
     end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140226002736) do
+ActiveRecord::Schema.define(version: 20140309050008) do
 
   create_table "brought_items", force: true do |t|
     t.integer  "bringer"
@@ -50,15 +50,6 @@ ActiveRecord::Schema.define(version: 20140226002736) do
   add_index "friendships", ["user_id", "friend_id"], name: "index_friendships_on_user_id_and_friend_id", unique: true
   add_index "friendships", ["user_id"], name: "index_friendships_on_user_id"
 
-  create_table "invitees", force: true do |t|
-    t.integer  "event_id"
-    t.integer  "invitee_id"
-    t.string   "invitee_name"
-    t.boolean  "going"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "movies", force: true do |t|
     t.string   "movie_name"
     t.string   "who_voted"
@@ -69,17 +60,17 @@ ActiveRecord::Schema.define(version: 20140226002736) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "new"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
     t.string   "last_name"
     t.string   "password_digest"
-    t.string   "remember_token"
-    t.string   "going"
-    t.string   "invited"
     t.boolean  "is_active"
-    t.string   "phone_number"
+    t.string   "email"
+    t.string   "facebook_id"
+    t.string   "profile_pic_path"
+    t.string   "facebook_token_digest"
+    t.string   "remember_token"
   end
 
   create_table "venues", force: true do |t|

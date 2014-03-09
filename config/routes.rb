@@ -1,7 +1,9 @@
 Gather::Application.routes.draw do
   
   match 'create', to: 'users#create', via: :post
-  match 'login', to: 'users#login', via: :post
+  match 'login_with_facebook', to: 'users#login_with_facebook', via: :post
+  match 'login_with_email', to: 'users#login_with_email', via: :post
+  match 'load_main_page', to: 'users#load_main_page', via: :get
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
