@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  attr_accessor :remember_token_pure, :remember_token
+  attr_accessor :facebook_token
   before_save { 
   	if self.email != nil 
   		self.email = email.downcase 

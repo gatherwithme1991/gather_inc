@@ -13,7 +13,7 @@ module UsersHelper
 	end
 
     def new_remember_token
-    	SecureRandom.urlsafe_base64
+    	return SecureRandom.urlsafe_base64
     end
 
 end

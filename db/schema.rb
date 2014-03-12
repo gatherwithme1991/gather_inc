@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140309050008) do
+ActiveRecord::Schema.define(version: 20140309210500) do
 
   create_table "brought_items", force: true do |t|
     t.integer  "bringer"
@@ -69,8 +69,7 @@ ActiveRecord::Schema.define(version: 20140309050008) do
     t.string   "email"
     t.string   "facebook_id"
     t.string   "profile_pic_path"
-    t.string   "facebook_token_digest"
-    t.string   "remember_token"
+    t.string   "remember_token_digest"
   end
 
   create_table "venues", force: true do |t|

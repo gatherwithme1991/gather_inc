@@ -1,3 +1,10 @@
-user[name]=Sercan&user[last_name]=Mihmanli&user[password_digest]=3004se&user[facebook_id]=1
+Sign up with email
+user[name]=Sercan&user[last_name]=Mihmanli&user[email]=smihmanli@yahoo.com&user[password_digest]=3004se
 
-user[email]=smihmanli@yahoo.com&user[password]=3004se
+Sign in with email
+user[email]=smihmanli@yahoo.com&user[password_digest]=3004se
+
+Login with facebook
+user[name]=Sercan&user[last_name]=Mihmanli&user[email]=smihmanli@yahoo.com&user[facebook_id]=1435635&user[facebook_token]=4dkgkmvmmeixiejn9944732
+
+user[name]=Aydanur&user[last_name]=Mihmanli&user[email]=amihmanli@yahoo.com&user[facebook_id]=74572242&user[facebook_token]=455399d9s99wj

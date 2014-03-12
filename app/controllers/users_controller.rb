@@ -9,8 +9,10 @@ class UsersController < ApplicationController
   	@user = User.new(user_params)
     user_email = @user[:email]
   
-    @user[:password_digest] = digest(@user[:password_digest])
     if User.find_by(email: user_email.downcase) == nil
+      @user[:password_digest] = digest(@user[:password_digest])
+      @remember_token = new_remember_token()
+      @user[:remember_token_digest] = digest(@remember_token)
       @user[:is_active] = true
       if @user.save
         #Make sure you add a profile pic path (might wanna use mkdir)
@@ -27,28 +29,30 @@ class UsersController < ApplicationController
   def login_with_facebook
   	# Get email and password and fetch necessary information
     user = User.find_by(facebook_id: user_params[:facebook_id])
-    
-    if user == nil #This user never logged in with fb before
-      #Call fb api to generate a token
+    #Call fb api to generate a token on the client side
+    #Authenticate this token    
+    if user == nil 
+      #This user never logged in with fb before
       @user = User.new(user_params)
       @user[:is_active] = true
-      @user[:facebook_token_digest] = digest(@user[:facebook_token_digest])
+      @remember_token = new_remember_token()
+      @user[:remember_token_digest] = digest(@remember_token)
       if @user.save
         @return_code = 0
-        @user_id = user[:id]
+        @user_id = @user[:id]
         retrieve_initial_user_info(user)
       else
         @return_code = -3
       end
     else
-      #This user already logged in with fb
-      if authenticate(user_params[:facebook_token_digest], user[:facebook_token_digest])
-        retrieve_initial_user_info(user)
-        @return_code = 1
-      else
-        @return_code = -4
-      end
-
+      #This user already has logged in with fb
+      retrieve_initial_user_info(user)
+      @remember_token = new_remember_token()
+      user[:remember_token_digest] = digest(@remember_token)
+      user.save
+      @user_id = user[:id]
+      @return_code = 0
+      
     end
      
     
@@ -56,7 +60,10 @@ class UsersController < ApplicationController
 
   def login_with_email
     user = User.find_by(email: user_params[:email])
-    if user != nil && authenticate(user_params[:password_digest], user[:password_digest]) 
+    if user != nil && authenticate(user_params[:password_digest], user[:password_digest])
+      @remember_token = new_remember_token()
+      user[:remember_token_digest] = digest(@remember_token)
+      user.save 
       @return_code = 0
       @user_id = user[:id]
       retrieve_initial_user_info(user)
@@ -75,6 +82,6 @@ class UsersController < ApplicationController
 
   	def user_params
       	params.require(:user).permit(:name, :last_name, :email, :password_digest,
-                                     :facebook_id, :facebook_token_digest)
+                                     :facebook_id, :facebook_token)
     end
 end
