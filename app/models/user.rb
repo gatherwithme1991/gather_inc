@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
   has_many :friendships, foreign_key: "user_id", dependent: :destroy
   has_many :friendships, foreign_key: "friend_id", dependent: :destroy
-
+  has_many :microposts
 
   
 
